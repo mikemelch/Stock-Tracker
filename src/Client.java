@@ -33,9 +33,9 @@ import java.security.*;
 import au.com.bytecode.opencsv.CSVReader;
 
 public class Client {
+    private static BufferedReader consoleReader;
 	
 	public static void adminView(Account account) throws IOException{
-		DataInputStream r = new DataInputStream(System.in);
 		int choice = 0;
 		account.updateAccount();
 		System.out.println("\nWELCOME " + account.getUsername());
@@ -52,7 +52,7 @@ public class Client {
 				System.out.println("\t7. Clear account data");
 				System.out.println("\t8. Quit");
 				System.out.print("\tEnter choice: ");
-				choice = Integer.parseInt(r.readLine());
+				choice = Integer.parseInt(consoleReader.readLine());
 				
 				if(choice == 1){
 					checkStock();
@@ -76,7 +76,7 @@ public class Client {
 				}
 				else if(choice == 7){
 					System.out.print("Enter password to continue (This cannot be undone!): ");
-					if(r.readLine().equals("admin")){
+					if(consoleReader.readLine().equals("admin")){
 						account.clearAccountData();
 					}
 				}
@@ -91,12 +91,11 @@ public class Client {
 	}
 	
 	public static void sellStock(Account account) throws IOException{
-		DataInputStream r = new DataInputStream(System.in);
 		try{
 			System.out.print("\nEnter the ticker of the stock you wish to sell: ");
-			String ticker = r.readLine();
+			String ticker = consoleReader.readLine();
 			System.out.print("\nEnter the number of shares you wish to sell: ");
-			int shares = Integer.parseInt(r.readLine());
+			int shares = Integer.parseInt(consoleReader.readLine());
 			
 			account.sellStock(ticker, shares);
 		}
@@ -107,18 +106,17 @@ public class Client {
 	}
 	
 	public static void buyStock(Account account) throws IOException{
-		DataInputStream r = new DataInputStream(System.in);
 		try{
 			System.out.print("\nEnter the ticker of the stock you want to purchase: ");
-			String ticker = r.readLine();
+			String ticker = consoleReader.readLine();
 			double price = checkStock(ticker);
 			
 			System.out.print("\nEnter the number of shares you want to purchase: ");
-			int shares = Integer.parseInt(r.readLine());
+			int shares = Integer.parseInt(consoleReader.readLine());
 			
 			while(shares <= 0){
 				System.out.print("\nERROR! Cannot buy " + shares + "\nEnter the number of shares you want to purchase: ");
-				shares = Integer.parseInt(r.readLine());
+				shares = Integer.parseInt(consoleReader.readLine());
 			}
 			
 			if(account.getBalance() >= (shares * price)){
@@ -181,11 +179,10 @@ public class Client {
 	}
 	public static void checkStock() throws MalformedURLException, UnsupportedEncodingException, IOException{
 		
-		DataInputStream r = new DataInputStream(System.in);
 		Reader changed;
 		try{
 			System.out.print("Enter the ticker symbol to recieve info: ");
-			String ticker = (r.readLine());
+			String ticker = (consoleReader.readLine());
 			
 			if(ticker.equals("sp500") || ticker.equals("SP500")){
 				fileRead("sp500.txt");
@@ -224,7 +221,6 @@ public class Client {
 
 	}
 	public static void accountPage(Account account) throws IOException{
-		DataInputStream r = new DataInputStream(System.in);
 		int choice = 0;
 		account.updateAccount();
 		System.out.println("WELCOME " + account.getUsername());
@@ -240,7 +236,7 @@ public class Client {
 					System.out.println("\t5. Show owned stocks");
 					System.out.println("\t6. Quit");
 					System.out.print("\tEnter choice: ");
-					choice = Integer.parseInt(r.readLine());
+					choice = Integer.parseInt(consoleReader.readLine());
 					
 					if(choice == 1){
 						checkStock();
@@ -266,16 +262,14 @@ public class Client {
 
 	}
 	public static void signIn() throws IOException, InterruptedException, NoSuchAlgorithmException{
-		DataInputStream r = new DataInputStream(System.in);
-		
 		System.out.print("Enter your username OR 1 to register: ");
-		String user = r.readLine();
+		String user = consoleReader.readLine();
 		
 		if(user.equals("1")){
 			System.out.print("Enter desired username: ");
-			String newuser = r.readLine();
+			String newuser = consoleReader.readLine();
 			System.out.print("Enter desired password: ");
-			String newpass = r.readLine();
+			String newpass = consoleReader.readLine();
 			
 			Account a = new Account();
 			
@@ -291,7 +285,7 @@ public class Client {
 		}
 		else{
 			System.out.print("Enter your password: ");
-			String pass = r.readLine();
+			String pass = consoleReader.readLine();
 
 			System.out.println("Checking login details...");
 			Thread.sleep(1000);
@@ -367,6 +361,7 @@ public class Client {
 
 	}
 	public static void main(String[] args) throws IOException, InterruptedException, NoSuchAlgorithmException {
+		consoleReader = new BufferedReader(new InputStreamReader(System.in));
 		signIn();
 	}
 
