@@ -7,9 +7,8 @@ Uses Yahoo Finance API to provide users with real time stock information and kee
 
 Author:       Mike Melchione
 
-Revisions  
+Releases  
 =============
 
-1.00  3/19/2013 (mikemelch) First release
+1.00  3/19/2013 (mikemelch) Initital release
 
-1.01  3/21/2013 (mikemelch) Error handling & admin menu
