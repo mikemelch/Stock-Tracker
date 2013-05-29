@@ -273,8 +273,8 @@ public class Client {
 			
 			Account a = new Account();
 			
-			if(a.accountLookup(newuser, newpass)){
-				System.out.println("This is already taken. Please try again later.");
+			if(a.doesUserExist(newuser)){
+				System.out.println("This username is already taken. Please try again later.");
 				System.exit(0);
 			}
 			else{

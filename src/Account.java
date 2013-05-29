@@ -74,6 +74,17 @@ public class Account {
 			
 		return false;
 	}
+
+	public boolean doesUserExist(String user) throws IOException, NumberFormatException, NoSuchAlgorithmException{
+		CSVReader csvReader = new CSVReader(new FileReader("accounts.csv"));
+		List<String []> content = csvReader.readAll();
+		for(int i = 0; i < content.size(); i++){
+			if(content.get(i)[0].equals(user)){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public String getUsername(){
 		return this.username;
@@ -192,4 +203,3 @@ public class Account {
 	}
 	
 }
-	
