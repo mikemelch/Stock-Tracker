@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.StringTokenizer;
@@ -33,7 +32,6 @@ public class Stock {
 	
 	public Stock parseStock(String content){
 		StringTokenizer s = new StringTokenizer(content);
-		
 		this.name = s.nextToken();
 		this.shares = Integer.parseInt(s.nextToken());
 		this.earnings = Double.parseDouble(s.nextToken());

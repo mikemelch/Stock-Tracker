@@ -1,10 +1,8 @@
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,19 +17,19 @@ public class Account {
 	private double balance;
 	private ArrayList<Stock> stocks;
 	
-	public Account(String username, String password) throws IOException{
+	public Account(String username, String password) throws IOException, NoSuchAlgorithmException{
 		
 		this.username = username;
-		this.password = password;
+		this.password = hashPassword(password);
 		this.balance = 100000;	   
 		this.stocks = new ArrayList<Stock>();
 
 		addAccount();
 	}
-	public Account(String username, String password, double balance) throws IOException{
+	public Account(String username, String password, double balance) throws IOException, NoSuchAlgorithmException{
 
 		this.username = username;
-		this.password = password;
+		this.password = hashPassword(password);
 		this.balance = balance;	   
 		this.stocks = new ArrayList<Stock>();
 		
@@ -53,16 +51,16 @@ public class Account {
 	    writer.close();
 	}
 	
-	public boolean accountLookup(String user, String pass) throws IOException{
+	public boolean accountLookup(String user, String pass) throws IOException, NumberFormatException, NoSuchAlgorithmException{
 		
 		CSVReader csvReader = new CSVReader(new FileReader("accounts.csv"));
 		List<String []> content = csvReader.readAll();
 		
 		for(int i = 0; i < content.size(); i++){
 			if(content.get(i)[0].equals(user)){
-				if(content.get(i)[1].equals(pass)){
+				if(content.get(i)[1].equals(hashPassword(pass))){
 					this.username = user;
-					this.password = pass;
+					this.password = hashPassword(pass);
 					this.balance = Double.parseDouble(content.get(i)[2]);
 					this.stocks = new ArrayList<Stock>();
 					for(int j = 3; j < content.get(i).length; j++){
@@ -95,7 +93,6 @@ public class Account {
 		for(int i = 0; i < content.size(); i++){
 			if(content.get(i)[0].equals(this.username)){
 				if(content.get(i)[1].equals(this.password)){
-					
 					String temp[] = new String[this.stocks.size() + 3];
 					temp[0] = content.get(i)[0];
 					temp[1] = content.get(i)[1];
@@ -120,6 +117,39 @@ public class Account {
 		
 	}
 	
+	public void updateAllAccounts() throws IOException{
+		CSVReader csvReader = new CSVReader(new FileReader("accounts.csv"));
+		List<String []> content = csvReader.readAll();
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		for(int i = 0; i < content.size(); i++){
+			Account a = new Account();
+			a.username = content.get(i)[0];
+			a.password = content.get(i)[1];
+			a.balance = Double.parseDouble(content.get(i)[2]);
+			a.stocks = new ArrayList<Stock>();
+			for(int j = 3; j < content.get(i).length; j++){
+				Stock s = new Stock();
+				a.stocks.add(s.parseStock(content.get(i)[j]));
+			}
+			accounts.add(a);
+		}
+		csvReader.close();
+		for(Account a: accounts){
+			a.updateAccount();
+		}
+	}
+	
+	public void clearAccountData() throws IOException{
+		CSVReader csvReader = new CSVReader(new FileReader("accounts.csv"));
+		List<String []> content = csvReader.readAll();
+		List<String []> newcontent = new ArrayList<String []>();
+		newcontent.add(content.get(0));
+		csvReader.close();
+		CSVWriter writer = new CSVWriter(new FileWriter("accounts.csv"));
+	    writer.writeAll(newcontent);
+	    writer.close();
+	}
+	
 	public void showStocks() throws NumberFormatException, IOException{
 		for(Stock s : this.stocks){
 			s.printStock();
@@ -142,4 +172,24 @@ public class Account {
 		this.updateAccount();
 	}
 	
+	public String hashPassword(String pass) throws NoSuchAlgorithmException{
+		MessageDigest mess = MessageDigest.getInstance("MD5");
+		mess.update(pass.getBytes());
+		byte digest[] = mess.digest();
+		return toHexString(digest);
+	}
+	
+	private String toHexString(byte[] bytes) {
+	    final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+	    char[] hexChars = new char[bytes.length * 2];
+	    int v;
+	    for ( int j = 0; j < bytes.length; j++ ) {
+	        v = bytes[j] & 0xFF;
+	        hexChars[j * 2] = hexArray[v >>> 4];
+	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+	    }
+	    return new String(hexChars);
+	}
+	
 }
+	
