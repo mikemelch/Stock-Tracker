@@ -1,15 +1,15 @@
 Stock-Tracker
 =============
 
-Program that keeps track of your stock progress with fictional money
+Keep track of your stock portfolio with fictional money!
 
-Author:       Mike Melchione (mlm378)
+Uses Yahoo Finance API to provide users with real time stock information and keep track of their current progress. 
 
-Environment:  JDK 7
+Author:       Mike Melchione
 
 Revisions  
 =============
 
-1.00  3/19/2013 (mlm378) First release
+1.00  3/19/2013 (mikemelch) First release
 
-1.01  3/21/2013 (mlm378) Error handling & admin menu
+1.01  3/21/2013 (mikemelch) Error handling & admin menu
