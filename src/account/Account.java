@@ -63,7 +63,7 @@ public class Account {
 			if(content.get(i)[0].equals(user)){
 				if(BCrypt.checkpw(pass, content.get(i)[1])){
 					this.username = user;
-					this.password = hashPassword(pass);
+					this.password = content.get(i)[1];
 					this.balance = Double.parseDouble(content.get(i)[2]);
 					this.stocks = new ArrayList<Stock>();
 					for(int j = 3; j < content.get(i).length; j++){
