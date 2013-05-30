@@ -26,14 +26,22 @@ import java.net.URL;
 import java.security.*;
 
 import account.Account;
+import account.AccountService;
+import account.CSVAccountRepository;
 import au.com.bytecode.opencsv.CSVReader;
+import stock.StockService;
 
 public class Client {
     private static BufferedReader consoleReader;
+
+    private static AccountService accountService;
+    private static StockService stockService;
 	
 	public static void adminView(Account account) throws IOException{
 		int choice = 0;
-		account.updateAccount();
+
+        accountService.updateAccount(account);
+
 		System.out.println("\nWELCOME " + account.getUsername());
 		System.out.println("\nWhat can I help you with today?");
 		while(choice != 8){
@@ -67,18 +75,19 @@ public class Client {
 					account.showStocks();
 				}
 				else if(choice == 6){
-					account.updateAllAccounts();
+					accountService.updateAllAccounts();
 					System.out.println("All accounts successfully updated");
 				}
 				else if(choice == 7){
 					System.out.print("Enter password to continue (This cannot be undone!): ");
 					if(consoleReader.readLine().equals("admin")){
-						account.clearAccountData();
+						accountService.clearAccountData();
 					}
 				}
 			}catch(Exception e){
 				System.out.println("Error! Invalid input!");
-			}
+                e.printStackTrace();
+            }
 		}	
 	}
 	
@@ -88,8 +97,8 @@ public class Client {
 			String ticker = consoleReader.readLine();
 			System.out.print("\nEnter the number of shares you wish to sell: ");
 			int shares = Integer.parseInt(consoleReader.readLine());
-			
-			account.sellStock(ticker, shares);
+
+            stockService.sellStock(account, ticker, shares);
 		}
 		catch(Exception e){
 			System.out.println("Error! Invalid input!");
@@ -112,7 +121,7 @@ public class Client {
 			}
 			
 			if(account.getBalance() >= (shares * price)){
-				account.buyStock(ticker, price, shares);
+                stockService.buyStock(account, ticker, price, shares);
 			}
 			else{
 				System.out.println("You have insufficient funds for this transaction!");
@@ -214,7 +223,9 @@ public class Client {
 	}
 	public static void accountPage(Account account) throws IOException{
 		int choice = 0;
-		account.updateAccount();
+
+        accountService.updateAccount(account);
+
 		System.out.println("WELCOME " + account.getUsername());
 		System.out.println("\nWhat can I help you with today?");
 		
@@ -262,17 +273,16 @@ public class Client {
 			String newuser = consoleReader.readLine();
 			System.out.print("Enter desired password: ");
 			String newpass = consoleReader.readLine();
-			
-			Account a = new Account();
-			
-			if(a.doesUserExist(newuser)){
+
+			if(accountService.accountExists(newuser)){
 				System.out.println("This username is already taken. Please try again later.");
 				System.exit(0);
 			}
 			else{
 				System.out.println("Thank you for registering! You have been given $100000. Invest it wisely!");
-				a = new Account(newuser, newpass);
-				accountPage(a);
+                Account account = Account.create(newuser, newpass);
+                accountService.addAccount(account);
+				accountPage(account);
 			}
 		}
 		else{
@@ -281,9 +291,9 @@ public class Client {
 
 			System.out.println("Checking login details...");
 			Thread.sleep(1000);
-			Account a = new Account();
 
-			if(a.accountLookup(user, pass)){			
+            Account a = accountService.getAccount(user, pass);
+			if(null != a){
 				if(a.getUsername().equals("admin"))
 					adminView(a);
 				else{
@@ -355,6 +365,8 @@ public class Client {
 
 	}
 	public static void main(String[] args) throws IOException, InterruptedException, NoSuchAlgorithmException {
+        accountService = new AccountService(new CSVAccountRepository("accounts.csv"));
+        stockService = new StockService(accountService);
 		consoleReader = new BufferedReader(new InputStreamReader(System.in));
 		signIn();
 	}
