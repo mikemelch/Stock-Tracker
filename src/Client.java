@@ -8,13 +8,9 @@ Package:	  au.com.bytecode.opencsv
 
 Function:     Keep track of stock accounts with fictional money
 
-Author:       Mike Melchione (mlm378)
+Author:       Mike Melchione (mikemelch)
 
-Environment:  JDK 7
-
-Revisions:    1.00  3/20/2013 (mlm378) First release
-              1.01  3/21/2013 (mlm378) Implemented error handling & admin menu
-              1.02	3/25/2013 (mlm378) Implemented MD5 secure passwords
+GitHub:		  https://github.com/mikemelch/Stock-Tracker.git
 
 ************************************************************/
 
@@ -30,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.*;
 
+import account.Account;
 import au.com.bytecode.opencsv.CSVReader;
 
 public class Client {

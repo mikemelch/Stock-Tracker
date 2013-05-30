@@ -1,10 +1,13 @@
+package account;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import stock.Stock;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -58,7 +61,7 @@ public class Account {
 		
 		for(int i = 0; i < content.size(); i++){
 			if(content.get(i)[0].equals(user)){
-				if(content.get(i)[1].equals(hashPassword(pass))){
+				if(BCrypt.checkpw(pass, content.get(i)[1])){
 					this.username = user;
 					this.password = hashPassword(pass);
 					this.balance = Double.parseDouble(content.get(i)[2]);
@@ -183,23 +186,7 @@ public class Account {
 		this.updateAccount();
 	}
 	
-	public String hashPassword(String pass) throws NoSuchAlgorithmException{
-		MessageDigest mess = MessageDigest.getInstance("MD5");
-		mess.update(pass.getBytes());
-		byte digest[] = mess.digest();
-		return toHexString(digest);
+	public String hashPassword(String pass){
+		return BCrypt.hashpw(pass, BCrypt.gensalt());	
 	}
-	
-	private String toHexString(byte[] bytes) {
-	    final char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-	    char[] hexChars = new char[bytes.length * 2];
-	    int v;
-	    for ( int j = 0; j < bytes.length; j++ ) {
-	        v = bytes[j] & 0xFF;
-	        hexChars[j * 2] = hexArray[v >>> 4];
-	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-	    }
-	    return new String(hexChars);
-	}
-	
 }
