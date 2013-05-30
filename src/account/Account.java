@@ -20,7 +20,7 @@ public class Account {
 	private double balance;
 	private ArrayList<Stock> stocks;
 	
-	public Account(String username, String password) throws IOException, NoSuchAlgorithmException{
+	public Account(String username, String password) throws IOException{
 		
 		this.username = username;
 		this.password = hashPassword(password);
@@ -29,7 +29,7 @@ public class Account {
 
 		addAccount();
 	}
-	public Account(String username, String password, double balance) throws IOException, NoSuchAlgorithmException{
+	public Account(String username, String password, double balance) throws IOException{
 
 		this.username = username;
 		this.password = hashPassword(password);
@@ -167,7 +167,7 @@ public class Account {
 	    writer.close();
 	}
 	
-	public void showStocks() throws NumberFormatException, IOException{
+	public void showStocks() throws IOException{
 		for(Stock s : this.stocks){
 			s.printStock();
 		}
