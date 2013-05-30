@@ -5,7 +5,8 @@ Keep track of your stock portfolio with fictional money!
 
 Uses Yahoo Finance API to provide users with real time stock information and keep track of their current progress. 
 
-Author:       Mike Melchione
+Authors:       Mike Melchione
+               Josh Simon
 
 Releases  
 =============
