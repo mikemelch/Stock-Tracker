@@ -54,10 +54,11 @@ public class Account {
 	    writer.close();
 	}
 	
-	public boolean accountLookup(String user, String pass) throws IOException, NumberFormatException, NoSuchAlgorithmException{
+	public boolean accountLookup(String user, String pass) throws IOException{
 		
 		CSVReader csvReader = new CSVReader(new FileReader("accounts.csv"));
 		List<String []> content = csvReader.readAll();
+		csvReader.close();
 		
 		for(int i = 0; i < content.size(); i++){
 			if(content.get(i)[0].equals(user)){
@@ -78,14 +79,16 @@ public class Account {
 		return false;
 	}
 
-	public boolean doesUserExist(String user) throws IOException, NumberFormatException, NoSuchAlgorithmException{
+	public boolean doesUserExist(String user) throws IOException{
 		CSVReader csvReader = new CSVReader(new FileReader("accounts.csv"));
 		List<String []> content = csvReader.readAll();
 		for(int i = 0; i < content.size(); i++){
 			if(content.get(i)[0].equals(user)){
+				csvReader.close();
 				return true;
 			}
 		}
+		csvReader.close();
 		return false;
 	}
 	
@@ -103,6 +106,7 @@ public class Account {
 	public void updateAccount() throws IOException{
 		CSVReader csvReader = new CSVReader(new FileReader("accounts.csv"));
 		List<String []> content = csvReader.readAll();
+		csvReader.close();
 		
 		for(int i = 0; i < content.size(); i++){
 			if(content.get(i)[0].equals(this.username)){
@@ -119,7 +123,6 @@ public class Account {
 						j++;
 					}
 					content.set(i, temp);
-					csvReader.close();
 					
 					CSVWriter writer = new CSVWriter(new FileWriter("accounts.csv"));
 				    writer.writeAll(content);

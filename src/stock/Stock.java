@@ -82,6 +82,9 @@ public class Stock {
 	    
 	    double currprice = Double.parseDouble(nextLine[2]);
 	    this.earnings = this.shares * (currprice - initialPrice);
+	    
+	    reader.close();
+	    input.close();
 	}
 	
 	public double modifyStock(int shares) throws IOException{
@@ -92,6 +95,9 @@ public class Stock {
 		
 	    CSVReader reader = new CSVReader(changed);
 	    String [] nextLine = reader.readNext();
+	    
+	    reader.close();
+	    input.close();
 	    
 	    double currprice = Double.parseDouble(nextLine[2]);
 	    this.shares -= shares;

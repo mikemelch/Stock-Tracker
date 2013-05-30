@@ -15,7 +15,6 @@ GitHub:		  https://github.com/mikemelch/Stock-Tracker.git
 ************************************************************/
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,14 +76,10 @@ public class Client {
 						account.clearAccountData();
 					}
 				}
+			}catch(Exception e){
+				System.out.println("Error! Invalid input!");
 			}
-				catch(Exception e){
-					System.out.println("Error! Invalid input!");
-				}
-			}
-			
-		
-		
+		}	
 	}
 	
 	public static void sellStock(Account account) throws IOException{
@@ -336,6 +331,8 @@ public class Client {
 			    reader.close();
 			}
 		}
+		
+		inFile.close();
 		
 		InputStream input = new URL(url.substring(0, url.length()) + "&f=nsl1ocghjkr").openStream();
 		changed = new InputStreamReader(input, "UTF-8");
