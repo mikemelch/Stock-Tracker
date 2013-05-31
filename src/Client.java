@@ -137,13 +137,13 @@ public class Client {
 		
 		Reader changed;
 		try{
-			if(ticker.equals("sp500") || ticker.equals("SP500")){
+			if(ticker.equalsIgnoreCase("sp500")){
 				fileRead("sp500.txt");
 			}
-			else if(ticker.equals("amex") || ticker.equals("AMEX")){
+			else if(ticker.equalsIgnoreCase("amex")){
 				fileRead("amex.txt");
 			}
-			else if(ticker.equals("nasdaq") || ticker.equals("NASDAQ")){
+			else if(ticker.equalsIgnoreCase("nasdaq")){
 				fileRead("nasdaq.txt");
 			}
 			else{
@@ -185,13 +185,13 @@ public class Client {
 			System.out.print("Enter the ticker symbol to recieve info: ");
 			String ticker = (consoleReader.readLine());
 			
-			if(ticker.equals("sp500") || ticker.equals("SP500")){
+			if(ticker.equalsIgnoreCase("sp500")){
 				fileRead("sp500.txt");
 			}
-			else if(ticker.equals("amex") || ticker.equals("AMEX")){
+			else if(ticker.equalsIgnoreCase("amex")){
 				fileRead("amex.txt");
 			}
-			else if(ticker.equals("nasdaq") || ticker.equals("NASDAQ")){
+			else if(ticker.equalsIgnoreCase("nasdaq")){
 				fileRead("nasdaq.txt");
 			}
 			else{
@@ -362,8 +362,8 @@ public class Client {
 	        System.out.println("\tP/E Ratio: " + nextLine[9]);
 	    }
 	    reader.close();
-
 	}
+	
 	public static void main(String[] args) throws IOException, InterruptedException, NoSuchAlgorithmException {
         accountService = new AccountService(new CSVAccountRepository("accounts.csv"));
         stockService = new StockService(accountService);
