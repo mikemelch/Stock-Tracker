@@ -34,8 +34,13 @@ public class Account {
     }
 
 	public void showStocks() throws IOException {
-		for(Stock s : this.stocks) {
-			s.printStock();
+		if(stocks.isEmpty()) {
+			System.out.println("Error.  You don't have any stocks to list!");
+		}
+		else {		
+			for(Stock s : this.stocks) {
+				s.printStock();
+			}						
 		}
 	}
 	
