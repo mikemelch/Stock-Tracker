@@ -35,7 +35,7 @@ public class Account {
 
 	public void showStocks() throws IOException {
 		if(stocks.isEmpty()) {
-			System.out.println("Error.  You don't have any stocks to list!");
+			System.out.println("You do not have any stocks to list!");
 		}
 		else {		
 			for(Stock s : this.stocks) {
