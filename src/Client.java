@@ -45,7 +45,7 @@ public class Client {
 
 		System.out.println("\nWELCOME " + account.getUsername());
 		System.out.println("\nWhat can I help you with today?");
-		while(choice != 8){
+		while(choice != 9){
 			try{
 				System.out.println("\n\t~~~~MENU~~~~");
 				System.out.println("\t1. Check stock");
@@ -53,9 +53,10 @@ public class Client {
 				System.out.println("\t3. Buy stock");
 				System.out.println("\t4. Sell stock");
 				System.out.println("\t5. Show owned stocks");
-				System.out.println("\t6. Update all accounts");
-				System.out.println("\t7. Clear account data");
-				System.out.println("\t8. Quit");
+				System.out.println("\t6. Show today's account performance");
+				System.out.println("\t7. Update all accounts");
+				System.out.println("\t8. Clear account data");
+				System.out.println("\t9. Quit");
 				System.out.print("\tEnter choice: ");
 				choice = Integer.parseInt(consoleReader.readLine());
 				
@@ -76,10 +77,13 @@ public class Client {
 					account.showStocks();
 				}
 				else if(choice == 6){
+					account.showAccountPerformance();
+				}
+				else if(choice == 7){
 					accountService.updateAllAccounts();
 					System.out.println("All accounts successfully updated");
 				}
-				else if(choice == 7){
+				else if(choice == 8){
 					System.out.print("Enter password to continue (This cannot be undone!): ");
 					if(consoleReader.readLine().equals("admin")){
 						accountService.clearAccountData();
@@ -230,7 +234,7 @@ public class Client {
 		System.out.println("WELCOME " + account.getUsername());
 		System.out.println("\nWhat can I help you with today?");
 		
-			while(choice != 6){
+			while(choice != 7){
 				try{
 					System.out.println("\n\t~~~~MENU~~~~");
 					System.out.println("\t1. Check stock");
@@ -238,7 +242,8 @@ public class Client {
 					System.out.println("\t3. Buy stock");
 					System.out.println("\t4. Sell stock");
 					System.out.println("\t5. Show owned stocks");
-					System.out.println("\t6. Quit");
+					System.out.println("\t6. Show today's account performance");
+					System.out.println("\t7. Quit");
 					System.out.print("\tEnter choice: ");
 					choice = Integer.parseInt(consoleReader.readLine());
 					
@@ -257,6 +262,9 @@ public class Client {
 					}
 					else if(choice == 5){
 						account.showStocks();
+					}
+					else if(choice == 6) {
+						account.showAccountPerformance();
 					}		
 				}
 				catch(Exception e){
@@ -275,7 +283,7 @@ public class Client {
 		if(user.equals("1")){
 			System.out.print("Enter desired username: ");
 			String newuser = consoleReader.readLine();
-					
+			
 			System.out.print("Enter desired password: ");
 			
 			// Read input and do not echo
@@ -287,10 +295,10 @@ public class Client {
 				System.out.println("This username is already taken. Please try again later.");
 				System.exit(0);
 			}
-			else{
-				System.out.println("Thank you for registering! You have been given $100000. Invest it wisely!");
-                Account account = Account.create(newuser, newpass);
-                accountService.addAccount(account);
+			else {
+			System.out.println("Thank you for registering! You have been given $100000. Invest it wisely!");
+                		Account account = Account.create(newuser, newpass);
+                		accountService.addAccount(account);
 				accountPage(account);
 			}
 		}

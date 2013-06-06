@@ -16,12 +16,18 @@ public class Stock {
 	private int shares;
 	private double earnings;
 	private double initialPrice;
-	
+	private double openPrice;
+	private double lastPrice; 
+	private double percentChanged; 
+		
 	public Stock(String name, int shares, double initialPrice){
 		this.name = name;
 		this.shares = shares;
 		this.earnings = 0;
 		this.initialPrice = initialPrice;
+		this.openPrice = 0;
+		this.lastPrice = 0;
+		this.percentChanged = 0;
 	}
 	
 	public Stock(){
@@ -29,6 +35,9 @@ public class Stock {
 		this.shares = 0;
 		this.earnings = 0;
 		this.initialPrice = 0;
+		this.openPrice = 0;
+		this.lastPrice = 0;
+		this.percentChanged = 0;
 	}
 	
 	public Stock parseStock(String content){
@@ -79,10 +88,17 @@ public class Stock {
 	
 	    CSVReader reader = new CSVReader(changed);
 	    String [] nextLine = reader.readNext();
-	    
-	    double currprice = Double.parseDouble(nextLine[2]);
+	
+		// Store the stock opening and last prices
+		this.openPrice = Double.parseDouble(nextLine[3]);
+		this.lastPrice = Double.parseDouble(nextLine[2]);	    
+
+	    double currprice = Double.parseDouble(nextLine[2]);		
 	    this.earnings = this.shares * (currprice - initialPrice);
-	    
+	   
+		// Calculate and store the percent change for the stock
+		this.percentChanged = (this.lastPrice - this.openPrice) / this.openPrice;		
+ 
 	    reader.close();
 	    input.close();
 	}
@@ -117,4 +133,49 @@ public class Stock {
 		return this.earnings;
 	}
 
+	public String getName() {
+		return this.name;
+	}
+
+	/**
+	 * Accessor for the initial price of the stock
+	 */
+	public double getInitialPrice() {
+		return this.initialPrice;
+	}
+
+	/**
+	 * Accessor for the open price of the stock
+	 */
+	public double getOpenPrice() {
+		return this.openPrice;
+	}
+
+	/**
+	 * Accessor for the last price of the stock
+	 */
+	public double getLastPrice() {
+		return this.lastPrice;
+	}
+
+	/**
+	 * Accessor for the percent change of the stock
+	 */
+	public double getPercentChanged() {
+		return this.percentChanged;
+	}
+
+	/**
+	 * Accessor for the total initial value of the stock
+	 */
+	public double getInitialValue() {
+		return this.initialPrice * this.shares;
+	}
+
+	/**
+	 * Accessor for the latest value of the stock
+	 */
+	public double getLatestValue() {
+		return this.lastPrice * this.shares;
+	}
 }
