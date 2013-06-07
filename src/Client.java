@@ -15,7 +15,6 @@ GitHub:		  https://github.com/mikemelch/Stock-Tracker.git
 ************************************************************/
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -274,9 +273,6 @@ public class Client {
 
 	}
 	public static void signIn() throws IOException, InterruptedException, NoSuchAlgorithmException{
-		Console consReader = System.console();
-		char[] userCred = null;
-
 		System.out.print("Enter your username OR 1 to register: ");
 		String user = consoleReader.readLine();
 		
@@ -285,11 +281,7 @@ public class Client {
 			String newuser = consoleReader.readLine();
 			
 			System.out.print("Enter desired password: ");
-			
-			// Read input and do not echo
-			userCred = consReader.readPassword();
-			String newpass = new String(userCred);
-			userCred = null;
+			String newpass = consoleReader.readLine();
 
 			if(accountService.accountExists(newuser)){
 				System.out.println("This username is already taken. Please try again later.");
@@ -304,11 +296,7 @@ public class Client {
 		}
 		else{
 			System.out.print("Enter your password: ");
-	
-			// Read input and do not echo
-			userCred = consReader.readPassword();
-			String pass = new String(userCred);		
-			userCred = null;		
+			String pass = consoleReader.readLine();		
 	
 			System.out.println("Checking login details...");
 			Thread.sleep(1000);
